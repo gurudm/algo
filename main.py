@@ -1,19 +1,24 @@
-
+import time
 from lib.angel import AngelLogin
 from lib.order import Order
+from lib.marketdata import Marketdata
 
-broker = AngelLogin(apikey)
 
-data = broker.generateSession(clientCode=clientcode, password=password)
-refreshToken= data['data']['refreshToken']
-feedToken=broker.getfeedToken()
 
-symbol = 'SBIN-EQ'
-price = '530'
-om = Order(broker, symbol)
+broker = AngelLogin(clientcode, password, apikey)
+brokerapp = broker.login()
 
-om.send_order('BUY', '530')
-print(broker.orderBook())
+
+symbol = 'BANKNIFTY'
+md = Marketdata(brokerapp, symbol)
+print('Symbol %s Last traded price : %s' % (symbol, md.ltp()['data']['ltp']))
+
+price = '1'
+om = Order(brokerapp, symbol)
+
+om.send_order('BUY', price)
+om.order_book(brokerapp)
+
 '''
 symbol = "SBIN-EQ"
 #ananyse symbol -- predict price, quantity, stoploss
@@ -46,6 +51,7 @@ fuctions
 set of functions - package
 set of packges - module
 '''
+
 
 
 

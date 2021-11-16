@@ -1,9 +1,16 @@
 from smartapi import SmartConnect
 
-class AngelLogin(SmartConnect):
+class AngelLogin():
 
-    def __init__(self, apikey):
-        super().__init__(api_key=apikey)
+    def __init__(self, clientid, password, apikey):
+        self.apikey = apikey
+        self.password = password
+        self.clientid = clientid
+
+    def login(self):
+        handle = SmartConnect(api_key=self.apikey)
+        handle.generateSession(clientCode=self.clientid, password=self.password)
+        return handle
 
     def getCandleData(self, **kwargs):
         historicParam = {
@@ -14,6 +21,7 @@ class AngelLogin(SmartConnect):
             "todate": "2021-02-08 09:16"
         }
         return super().getCandleData(historicParam)
+
 
 
 

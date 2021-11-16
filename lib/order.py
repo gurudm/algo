@@ -1,7 +1,7 @@
 import json
 from lib import angel
 
-SYM = json.loads(open('../data/symbols.json').read())
+SYM = json.loads(open('data/symbols.json').read())
 
 
 class Order:
@@ -29,11 +29,25 @@ class Order:
         except Exception as e:
             print(e)
         else:
-            print(order_id)
+            print('Order Id : %s\nStatus : %s' %(order_id, self.order_status(order_id)))
 
     def cancel_order(self, order_id):
         self.broker.cancel_order(order_id)
 
     def amend_order(self): ...
-    def order_status(self): ...
+    def order_status(self, orderid):
+        orderbook = self.broker.orderBook()
+        for order in orderbook['data']:
+            if order['orderid'] == orderid:
+                return order['text']
+
+    @staticmethod
+    def order_book(broker):
+        orderbook = broker.orderBook()
+        for order in orderbook['data']:
+            print(order)
+            print('OrderId = %s, Status = %s' % (order['orderid'], order['status']))
+
+
     def create_order(self): ...
+
