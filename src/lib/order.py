@@ -1,5 +1,4 @@
 import json
-from lib import angel
 
 SYM = json.loads(open('data/symbols.json').read())
 
